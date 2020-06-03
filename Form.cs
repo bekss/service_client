@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
@@ -76,29 +75,24 @@ namespace service_client
             lbl_status.Text = "Файл жүктөлүп бүттү!";
             DbfFile globalFile = new DbfFile(Encoding.UTF8);
             globalFile.Open("temp.dbf", FileMode.Open);
-            var outputFileStream = new FileStream(Path.Combine(Directory, "testout.dbf"), FileMode.Create);
-            var outputStreamWriter = new StreamWriter(outputFileStream, Encoding.Default);
+            DbfFile writen = new DbfFile(Encoding.UTF8);
+            writen.Open(Path.Combine(Directory, "testout.dbf"), FileMode.Create);
 
-            //read and print records to screen...
-            var outRecord = new DbfRecord(globalFile.Header);
+            var outrecord = new DbfRecord(globalFile.Header);
 
-            for (int i = 0; i < globalFile.Header.RecordCount; i++)
+            for (int i=0; i<globalFile.Header.ColumnCount; i++)
             {
-                if (!globalFile.Read(i, outRecord))
-                    break;
-                outputStreamWriter.WriteLine(outRecord);
+                writen.Header.AddColumn(globalFile.Header[i]);
             }
 
-            /*
-              while (globalFile.ReadNext(orec))
-              {
-            outputStreamWriter.WriteLine(outRecord.ToString());
-              }
-              */
 
-            outputStreamWriter.Flush();
-            outputStreamWriter.Close();
-            MessageBox.Show("ДБФ файлы жазылып бүттү!");
+            while (globalFile.ReadNext(outrecord))
+            {
+                writen.Write(outrecord);
+            }
+
+            writen.Close();
+            MessageBox.Show("ДБФ файлдары жазылып бүттү!");
 
         }
 

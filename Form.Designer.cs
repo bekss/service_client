@@ -102,6 +102,16 @@
             // 
             this.input_region.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.input_region.FormattingEnabled = true;
+            this.input_region.Items.AddRange(new object[] {
+            "Бишкек шаары",
+            "Ош шаары",
+            "Чүй",
+            "Ош облусу",
+            "Талас",
+            "Ысыккөл",
+            "Жалал-Абад",
+            "Баткен",
+            "Нарын"});
             this.input_region.Location = new System.Drawing.Point(0, 111);
             this.input_region.Name = "input_region";
             this.input_region.Size = new System.Drawing.Size(135, 28);
