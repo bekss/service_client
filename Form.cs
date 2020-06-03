@@ -25,6 +25,16 @@ namespace service_client
 
         {
             InitializeComponent();
+            input_region.Items.Add("Баары");
+            input_region.Items.Add("Бишкек шаары");
+            input_region.Items.Add("Ош шаары");
+            input_region.Items.Add("Чүй");
+            input_region.Items.Add("Ош облусу");
+            input_region.Items.Add("Ысыккөл");
+            input_region.Items.Add("Жалалабад");
+            input_region.Items.Add("");
+            input_region.Items.Add("Бишкек");
+
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

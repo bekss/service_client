@@ -102,19 +102,9 @@
             // 
             this.input_region.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.input_region.FormattingEnabled = true;
-            this.input_region.Items.AddRange(new object[] {
-            "Бишкек шаары",
-            "Ош шаары",
-            "Чүй",
-            "Ош облусу",
-            "Талас",
-            "Ысыккөл",
-            "Жалал-Абад",
-            "Баткен",
-            "Нарын"});
             this.input_region.Location = new System.Drawing.Point(0, 111);
             this.input_region.Name = "input_region";
-            this.input_region.Size = new System.Drawing.Size(135, 28);
+            this.input_region.Size = new System.Drawing.Size(132, 28);
             this.input_region.TabIndex = 2;
             // 
             // input_end
@@ -207,9 +197,9 @@
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.DateTimePicker input_end;
         private System.Windows.Forms.Label lbl_region;
-        private System.Windows.Forms.ComboBox input_region;
         private System.Windows.Forms.Label lbl_status;
         private System.Windows.Forms.Label lbl_percent;
+        private System.Windows.Forms.ComboBox input_region;
     }
 }
 
