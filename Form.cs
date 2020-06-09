@@ -67,13 +67,7 @@ namespace service_client
 
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
-                try
-                {
-                    client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, filename));
-                } catch
-                {
-                    MessageBox.Show($"Күтүлбөгөн ката кетти: Програм колдонгон temp.dbf файлы башка програмда колдонулуп атат аны жаап кайра аракет кылыңыз.");
-                }
+                client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, filename));
 
             }
         }
@@ -92,11 +86,12 @@ namespace service_client
                         }
                         if (e.Error.GetType().Equals(typeof(UnauthorizedAccessException)))
                         {
-                            MessageBox.Show($"Жеткиңиз жок: {e.Error.InnerException.Message}, {e.Error.InnerException.GetType()}");
+                            MessageBox.Show($"{Directory} директориасына жеткиңиз жок. Башка директорианы тандап көрүңүз");
                             return;
                         }
                     }
-                    MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат. {e.Error.Message}, {e.Error.GetType()}");
+                    MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат.");
+                    File.Delete(Path.Combine(Directory, "temp.dbf"));
                     return;
                 }
                 MessageBox.Show("Күтүлбөгөн ката кетти!");
@@ -104,6 +99,7 @@ namespace service_client
             }
             if (e.Cancelled)
             {
+                File.Delete(Path.Combine(Directory, "temp.dbf"));
                 MessageBox.Show("Файлды жүктөө жокко чыгарылды.");
                 return;
             }
@@ -147,6 +143,7 @@ namespace service_client
                     inner_db.Close();
                     global_db.Close();
                 }
+                File.Delete(Path.Combine(Directory, "temp.dbf"));
                 MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.");
                 btn_save.Text = "Кайрадан сактоо";
             }
