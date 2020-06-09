@@ -68,7 +68,7 @@ namespace service_client
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
                 client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, filename));
-
+                File.SetAttributes(Path.Combine(Directory, filename), FileAttributes.Hidden);
             }
         }
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -91,7 +91,6 @@ namespace service_client
                         }
                     }
                     MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат.");
-                    File.Delete(Path.Combine(Directory, "temp.dbf"));
                     return;
                 }
                 MessageBox.Show("Күтүлбөгөн ката кетти!");
@@ -108,7 +107,7 @@ namespace service_client
 
                 lbl_status.Text = "Файл жүктөлүп бүттү!";
                 DbfFile global_db = new DbfFile(Encoding.UTF8);
-                DbfFile inner_db = new DbfFile(Encoding.UTF8);
+                DbfFile inner_db = new DbfFile(Encoding.GetEncoding(1251));
                 var region_dict = new Dictionary<string, int>();
                 if (input_region.SelectedItem.ToString() == "Кыргызстан")
                 {
@@ -121,7 +120,7 @@ namespace service_client
                 foreach (KeyValuePair<string, int> region in region_dict)
                 {
                     global_db.Open(Path.Combine(Directory, "temp.dbf"), FileMode.Open);
-                    inner_db.Open(Path.Combine(Directory, $"{region.Key}.dbf"), FileMode.Create);
+                    inner_db.Open(Path.Combine(Directory, $"{region.Value}.dbf"), FileMode.Create);
 
                     var new_record = new DbfRecord(global_db.Header);
 
@@ -133,7 +132,7 @@ namespace service_client
                     int record_index = 0;
                     while (global_db.ReadNext(new_record))
                     {
-                        if (new_record[1].ToString().Substring(0, 5) == region.Value.ToString())
+                        if (!new_record.IsDeleted && new_record[1].ToString().Substring(0, 5) == region.Value.ToString())
                         {
                             new_record.RecordIndex = record_index; // required to force change index.
                             inner_db.Write(new_record);

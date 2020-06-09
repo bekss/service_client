@@ -15,19 +15,19 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_057A1324E9954D669A787D83DD2A7A2B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_086F33284CAB43BCB063C6459A9AB842"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1B9937F082274E8E94DCCE8C7C70184B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_59CE51034431421889BF1904DC39CC69"
+        "MsmKey" = "8:_1CD24CCD6D51415F96A97ED09ABAB973"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,12 +45,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7C96CA0AF3E0C5344D6E4B18303BAE2D"
-        "OwnerKey" = "8:_086F33284CAB43BCB063C6459A9AB842"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_8649BF3686C2F2691D6D60088DBCB21F"
         "OwnerKey" = "8:_086F33284CAB43BCB063C6459A9AB842"
         "MsmSig" = "8:_UNDEFINED"
@@ -58,7 +52,7 @@
         "Entry"
         {
         "MsmKey" = "8:_8649BF3686C2F2691D6D60088DBCB21F"
-        "OwnerKey" = "8:_7C96CA0AF3E0C5344D6E4B18303BAE2D"
+        "OwnerKey" = "8:_F599225F3E104D4155F9881DEED26575"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -87,8 +81,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9D9103211FA6041AEFF40567B4E22C32"
+        "MsmKey" = "8:_F599225F3E104D4155F9881DEED26575"
+        "OwnerKey" = "8:_086F33284CAB43BCB063C6459A9AB842"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -127,6 +121,12 @@
         "OwnerKey" = "8:_A4F71DD715E495DC4E10E617E34E5FB6"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9D9103211FA6041AEFF40567B4E22C32"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -145,6 +145,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -161,6 +169,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -190,9 +214,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1B9937F082274E8E94DCCE8C7C70184B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_057A1324E9954D669A787D83DD2A7A2B"
             {
-            "SourcePath" = "8:..\\service_client\\logo.ico"
+            "SourcePath" = "8:..\\logo.ico"
             "TargetName" = "8:logo.ico"
             "Tag" = "8:"
             "Folder" = "8:_17184345838B438B829ED8807E6AD937"
@@ -210,9 +234,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_59CE51034431421889BF1904DC39CC69"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1CD24CCD6D51415F96A97ED09ABAB973"
             {
-            "SourcePath" = "8:..\\service_client\\uninstall.ico"
+            "SourcePath" = "8:..\\uninstall.ico"
             "TargetName" = "8:uninstall.ico"
             "Tag" = "8:"
             "Folder" = "8:_17184345838B438B829ED8807E6AD937"
@@ -275,37 +299,6 @@
                     }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_17184345838B438B829ED8807E6AD937"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7C96CA0AF3E0C5344D6E4B18303BAE2D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SocialExplorer.FastDBF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_7C96CA0AF3E0C5344D6E4B18303BAE2D"
-                    {
-                    "Name" = "8:SocialExplorer.FastDBF.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SocialExplorer.FastDBF.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_17184345838B438B829ED8807E6AD937"
@@ -447,6 +440,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F599225F3E104D4155F9881DEED26575"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SocialExplorer.FastDBF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F599225F3E104D4155F9881DEED26575"
+                    {
+                    "Name" = "8:SocialExplorer.FastDBF.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SocialExplorer.FastDBF.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_17184345838B438B829ED8807E6AD937"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -532,7 +556,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:For internal use only"
         "ARPURLINFOABOUT" = "8:https://www.stat.kg"
-        "ARPPRODUCTICON" = "8:_59CE51034431421889BF1904DC39CC69"
+        "ARPPRODUCTICON" = "8:_1CD24CCD6D51415F96A97ED09ABAB973"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -646,7 +670,7 @@
             "Target" = "8:_086F33284CAB43BCB063C6459A9AB842"
             "Folder" = "8:_049CFC476D65495A97AE61BCC091599A"
             "WorkingFolder" = "8:_17184345838B438B829ED8807E6AD937"
-            "Icon" = "8:_1B9937F082274E8E94DCCE8C7C70184B"
+            "Icon" = "8:_057A1324E9954D669A787D83DD2A7A2B"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C2D649F1808C48A0A13AFCC1F9957174"
@@ -660,7 +684,7 @@
             "Target" = "8:_086F33284CAB43BCB063C6459A9AB842"
             "Folder" = "8:_78E9AC69DC1040E4B1B3C7A1AAEDA72E"
             "WorkingFolder" = "8:_17184345838B438B829ED8807E6AD937"
-            "Icon" = "8:_1B9937F082274E8E94DCCE8C7C70184B"
+            "Icon" = "8:_057A1324E9954D669A787D83DD2A7A2B"
             "Feature" = "8:"
             }
         }
@@ -1064,7 +1088,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_086F33284CAB43BCB063C6459A9AB842"
             {
-            "SourcePath" = "8:..\\service_client\\obj\\Debug\\service_client.exe"
+            "SourcePath" = "8:..\\obj\\Release\\service_client.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_17184345838B438B829ED8807E6AD937"
