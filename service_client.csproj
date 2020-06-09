@@ -32,6 +32,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="SocialExplorer.FastDBF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\SocialExplorer.FastDBF.1.0.0\lib\netstandard2.0\SocialExplorer.FastDBF.dll</HintPath>
@@ -83,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

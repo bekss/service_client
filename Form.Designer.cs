@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             this.label_frame = new System.Windows.Forms.GroupBox();
             this.lbl_region = new System.Windows.Forms.Label();
             this.end_date = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.lbl_status = new System.Windows.Forms.Label();
             this.lbl_percent = new System.Windows.Forms.Label();
+            this.btn_exit = new System.Windows.Forms.Button();
             this.label_frame.SuspendLayout();
             this.input_frame.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +56,6 @@
             this.label_frame.Size = new System.Drawing.Size(189, 191);
             this.label_frame.TabIndex = 0;
             this.label_frame.TabStop = false;
-            this.label_frame.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // lbl_region
             // 
@@ -96,7 +97,6 @@
             this.input_frame.Size = new System.Drawing.Size(211, 191);
             this.input_frame.TabIndex = 1;
             this.input_frame.TabStop = false;
-            this.input_frame.Enter += new System.EventHandler(this.groupBox1_Enter_1);
             // 
             // input_region
             // 
@@ -104,7 +104,7 @@
             this.input_region.FormattingEnabled = true;
             this.input_region.Location = new System.Drawing.Point(0, 111);
             this.input_region.Name = "input_region";
-            this.input_region.Size = new System.Drawing.Size(132, 28);
+            this.input_region.Size = new System.Drawing.Size(135, 28);
             this.input_region.TabIndex = 2;
             // 
             // input_end
@@ -135,13 +135,12 @@
             this.progress.Name = "progress";
             this.progress.Size = new System.Drawing.Size(427, 31);
             this.progress.TabIndex = 2;
-            this.progress.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(53, 394);
+            this.btn_save.Location = new System.Drawing.Point(52, 394);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(166, 45);
+            this.btn_save.Size = new System.Drawing.Size(167, 45);
             this.btn_save.TabIndex = 3;
             this.btn_save.Text = "Сактоо";
             this.btn_save.UseVisualStyleBackColor = true;
@@ -165,17 +164,29 @@
             this.lbl_percent.Size = new System.Drawing.Size(0, 20);
             this.lbl_percent.TabIndex = 5;
             // 
+            // btn_exit
+            // 
+            this.btn_exit.Location = new System.Drawing.Point(312, 394);
+            this.btn_exit.Name = "btn_exit";
+            this.btn_exit.Size = new System.Drawing.Size(167, 45);
+            this.btn_exit.TabIndex = 6;
+            this.btn_exit.Text = "Чыгуу";
+            this.btn_exit.UseVisualStyleBackColor = true;
+            this.btn_exit.Click += new System.EventHandler(this.btn_exit_Click);
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 450);
+            this.Controls.Add(this.btn_exit);
             this.Controls.Add(this.lbl_percent);
             this.Controls.Add(this.lbl_status);
             this.Controls.Add(this.btn_save);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.input_frame);
             this.Controls.Add(this.label_frame);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form";
             this.Text = "DBF жүктөп алуу колдонмосу";
             this.label_frame.ResumeLayout(false);
@@ -200,6 +211,7 @@
         private System.Windows.Forms.Label lbl_status;
         private System.Windows.Forms.Label lbl_percent;
         private System.Windows.Forms.ComboBox input_region;
+        private System.Windows.Forms.Button btn_exit;
     }
 }
 
