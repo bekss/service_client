@@ -7,6 +7,8 @@ using System.Net;
 using System.IO;
 using SocialExplorer.IO.FastDBF;
 using System.Security.Permissions;
+using System.Reflection;
+
 namespace service_client
 {
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -107,7 +109,7 @@ namespace service_client
 
                 lbl_status.Text = "Файл жүктөлүп бүттү!";
                 DbfFile global_db = new DbfFile(Encoding.UTF8);
-                DbfFile inner_db = new DbfFile(Encoding.GetEncoding(1251));
+                DbfFile inner_db = new DbfFile(Encoding.UTF8);
                 var region_dict = new Dictionary<string, int>();
                 if (input_region.SelectedItem.ToString() == "Кыргызстан")
                 {
@@ -120,23 +122,36 @@ namespace service_client
                 foreach (KeyValuePair<string, int> region in region_dict)
                 {
                     global_db.Open(Path.Combine(Directory, "temp.dbf"), FileMode.Open);
-                    inner_db.Open(Path.Combine(Directory, $"{region.Value}.dbf"), FileMode.Create);
 
-                    var new_record = new DbfRecord(global_db.Header);
+                    DbfRecord record = new DbfRecord(global_db.Header);
+                    
+                    inner_db.Open(Path.Combine(Directory, $"{region.Value}.dbf"), FileMode.Create);
 
                     for (int i = 0; i < global_db.Header.ColumnCount; i++)
                     {
                         inner_db.Header.AddColumn(global_db.Header[i]);
                     }
 
-                    int record_index = 0;
-                    while (global_db.ReadNext(new_record))
+                    string temp;
+                    byte[] bytes;
+                    while (global_db.ReadNext(record))
                     {
-                        if (!new_record.IsDeleted && new_record[1].ToString().Substring(0, 5) == region.Value.ToString())
+                        if (!record.IsDeleted && record[1].ToString().Substring(0, 5) == region.Value.ToString())  // main grouping by region condition
                         {
-                            new_record.RecordIndex = record_index; // required to force change index.
-                            inner_db.Write(new_record);
-                            record_index++;
+                            
+                            DbfRecord new_record = new DbfRecord(inner_db.Header);
+                            for (int j = 0; j < inner_db.Header.ColumnCount; j++)
+                            {
+                                bytes = Encoding.GetEncoding(1251).GetBytes(record[j]);
+                                temp = Encoding.GetEncoding(1251).GetString(bytes);
+                                if (temp.Contains("?"))
+                                {                                                    //   Imitating null values with '' for both chararter columns and numeric columns.
+                                    new_record[j] = "";                              //   But be aware if you have chararter columns that may contain '?' symbol
+                                }                                                    //   in that case you will simply loose records that contain '?' symbol.
+                                else
+                                    new_record[j] = temp;
+                            }
+                            inner_db.Write(new_record, true);
                         }
                     }
                     inner_db.Close();
