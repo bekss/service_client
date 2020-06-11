@@ -152,6 +152,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -312,7 +320,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -539,7 +547,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DBF Download"
         "ProductCode" = "8:{93FCB448-C07F-4E9E-8259-51C3F4346856}"
-        "PackageCode" = "8:{4DFFDD4A-B251-4985-9809-42C5BAAD2FCF}"
+        "PackageCode" = "8:{3B4641B6-B6FF-4CE5-8408-09D3162F449E}"
         "UpgradeCode" = "8:{4F9AD430-D94D-4ABA-9B92-20C24DDAB00C}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
