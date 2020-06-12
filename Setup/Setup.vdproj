@@ -320,7 +320,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:TRUE"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -669,7 +669,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8D9060D7F6CC4B52B0EA4E596505C488"
             {
-            "Name" = "8:DBF Jüktöö"
+            "Name" = "8:DBF Emgek"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -683,7 +683,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C2D649F1808C48A0A13AFCC1F9957174"
             {
-            "Name" = "8:DBF Jüktöö"
+            "Name" = "8:DBF Trud"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"

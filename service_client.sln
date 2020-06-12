@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "DBF Download", "Setup\Setup.vdproj", "{912E59C7-1D59-442F-93C5-131935B3C58C}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "DBF Downloader(32 bit)", "DBF Downloader(32 bit)\DBF Downloader(32 bit).vdproj", "{A21052A0-0A6C-4136-9E3C-5B68D9671187}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +24,6 @@ Global
 		{FA3500C6-3F4A-4D2C-91BB-7A0AF0EC6986}.Release|Any CPU.Build.0 = Release|Any CPU
 		{912E59C7-1D59-442F-93C5-131935B3C58C}.Debug|Any CPU.ActiveCfg = Debug
 		{912E59C7-1D59-442F-93C5-131935B3C58C}.Release|Any CPU.ActiveCfg = Release
-		{A21052A0-0A6C-4136-9E3C-5B68D9671187}.Debug|Any CPU.ActiveCfg = Debug
-		{A21052A0-0A6C-4136-9E3C-5B68D9671187}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

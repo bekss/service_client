@@ -16,15 +16,15 @@ namespace service_client
     {
         public static Dictionary<string, int> regions = new Dictionary<string, int>()
         {
-            { "Баткен", 41705},
-            { "Бишкек шаары", 41711 },
-            { "Жалалабад", 41703 },
+            { "Бишкек ш.", 41711 },
+            { "Ош ш.", 41721 },
+            { "Ысык-Көл", 41702 },
+            { "Жалал-Абад", 41703 },
             { "Нарын", 41704 },
+            { "Баткен", 41705 },
+            { "Ош", 41706 },
             { "Талас", 41707 },
-            { "Ош облусу", 41706 },
-            { "Ош шаары", 41721 },
-            { "Чүй", 41708 },
-            { "Ысыккөл", 41702 }
+            { "Чүй", 41708 }
         };
         public int Percent { get; set; } = 0;
         public string Service { get; set; } = "http://report.stat.kg/api/report/download/T_Month";
@@ -34,8 +34,7 @@ namespace service_client
 
         {
             InitializeComponent();
-            input_region.Items.AddRange(new string[]{ "Кыргызстан", "Баткен", "Бишкек шаары",
-                "Жалалабад", "Нарын", "Талас", "Ош облусу", "Ош шаары", "Чүй", "Ысыккөл"});
+            input_region.Items.AddRange(new string[]{ "Кыргызстан", "Бишкек ш.", "Ош ш.", "Ысык-Көл", "Жалал-Абад", "Нарын", "Баткен", "Ош", "Талас", "Чүй"});
             input_region.Text = "Кыргызстан";
             input_region.DropDownStyle = ComboBoxStyle.DropDownList;
         }
@@ -158,7 +157,8 @@ namespace service_client
                     global_db.Close();
                 }
                 File.Delete(Path.Combine(Directory, "temp.dbf"));
-                MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.");
+                MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
+                    "Можете выйти из приложения");
                 btn_save.Text = "Кайрадан сактоо";
             }
         }

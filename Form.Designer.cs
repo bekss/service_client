@@ -61,31 +61,31 @@
             // 
             this.lbl_region.AutoSize = true;
             this.lbl_region.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_region.Location = new System.Drawing.Point(116, 111);
+            this.lbl_region.Location = new System.Drawing.Point(25, 114);
             this.lbl_region.Name = "lbl_region";
-            this.lbl_region.Size = new System.Drawing.Size(67, 20);
+            this.lbl_region.Size = new System.Drawing.Size(161, 20);
             this.lbl_region.TabIndex = 2;
-            this.lbl_region.Text = "Аймагы";
+            this.lbl_region.Text = "Аймагы/Территория";
             // 
             // end_date
             // 
             this.end_date.AutoSize = true;
             this.end_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.end_date.Location = new System.Drawing.Point(84, 68);
+            this.end_date.Location = new System.Drawing.Point(37, 68);
             this.end_date.Name = "end_date";
-            this.end_date.Size = new System.Drawing.Size(99, 20);
+            this.end_date.Size = new System.Drawing.Size(149, 20);
             this.end_date.TabIndex = 1;
-            this.end_date.Text = "Аяктоо күнү";
+            this.end_date.Text = "Аяктоо күнү/Конец";
             // 
             // start_date
             // 
             this.start_date.AutoSize = true;
             this.start_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.start_date.Location = new System.Drawing.Point(79, 24);
+            this.start_date.Location = new System.Drawing.Point(20, 24);
             this.start_date.Name = "start_date";
-            this.start_date.Size = new System.Drawing.Size(104, 20);
+            this.start_date.Size = new System.Drawing.Size(166, 20);
             this.start_date.TabIndex = 0;
-            this.start_date.Text = "Баштоо күнү";
+            this.start_date.Text = "Баштоо күнү/Начало";
             // 
             // input_frame
             // 
@@ -142,7 +142,7 @@
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(167, 45);
             this.btn_save.TabIndex = 3;
-            this.btn_save.Text = "Сактоо";
+            this.btn_save.Text = "Сактоо/Сохранить";
             this.btn_save.UseVisualStyleBackColor = true;
             this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
             // 
@@ -170,7 +170,7 @@
             this.btn_exit.Name = "btn_exit";
             this.btn_exit.Size = new System.Drawing.Size(167, 45);
             this.btn_exit.TabIndex = 6;
-            this.btn_exit.Text = "Чыгуу";
+            this.btn_exit.Text = "Чыгуу/Выход";
             this.btn_exit.UseVisualStyleBackColor = true;
             this.btn_exit.Click += new System.EventHandler(this.btn_exit_Click);
             // 
@@ -188,7 +188,7 @@
             this.Controls.Add(this.label_frame);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form";
-            this.Text = "DBF жүктөп алуу колдонмосу";
+            this.Text = "1 Trud";
             this.label_frame.ResumeLayout(false);
             this.label_frame.PerformLayout();
             this.input_frame.ResumeLayout(false);
