@@ -91,7 +91,8 @@ namespace service_client
                             return;
                         }
                     }
-                    MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат.");
+                    MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат\n" +
+                        $"Ошибка на сервере.");
                     return;
                 }
                 MessageBox.Show("Күтүлбөгөн ката кетти!");
@@ -100,13 +101,15 @@ namespace service_client
             if (e.Cancelled)
             {
                 File.Delete(Path.Combine(Directory, "temp.dbf"));
-                MessageBox.Show("Файлды жүктөө жокко чыгарылды.");
+                MessageBox.Show("Файлды жүктөө жокко чыгарылды\n" +
+                    "Файл не выгружен");
                 return;
             }
             else
             {
 
-                lbl_status.Text = "Файл жүктөлүп бүттү!";
+                lbl_status.Text = "Файл жүктөлүп бүттү\n" +
+                    "Файл выгружен";
                 DbfFile global_db = new DbfFile(Encoding.UTF8);
                 DbfFile inner_db = new DbfFile(Encoding.UTF8);
                 var region_dict = new Dictionary<string, int>();
