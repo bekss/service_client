@@ -30,6 +30,8 @@ namespace service_client
         public string Service { get; set; } = "http://report.stat.kg/api/report/download/T_Month";
         public string Directory { get; set; } = "";
 
+        public string Filename { get; set; } = "41700.dbf";
+
         public Form()
 
         {
@@ -62,14 +64,18 @@ namespace service_client
                 string date_end = input_end.Value.ToShortDateString();
 
                 string uri_text = $"{Service}?startDate={date_start}&&expirationDate={date_end}";
-                string filename = "temp.dbf";
+                int counter = 1;
+                while (File.Exists(Path.Combine(Directory, Filename)))
+                {
+                    Filename = Filename.Substring(0, 5) + $" ({counter}).dbf";
+                    counter++;
+                }
 
                 WebClient client = new WebClient();
 
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
-                client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, filename));
-                File.SetAttributes(Path.Combine(Directory, filename), FileAttributes.Hidden);
+                client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, Filename));
             }
         }
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -82,7 +88,7 @@ namespace service_client
                     {
                         if (e.Error.InnerException.GetType().Equals(typeof(IOException)))
                         {
-                            MessageBox.Show("Ката: Програм колдонгон temp.dbf файлы башка програмда колдонулуп атат аны жаап кайра аракет кылыңыз.");
+                            MessageBox.Show("Ката: Програм колдонгон Кыргызстан.dbf файлы башка програмда колдонулуп атат аны жаап кайра аракет кылыңыз.");
                             return;
                         }
                         if (e.Error.GetType().Equals(typeof(UnauthorizedAccessException)))
@@ -100,7 +106,7 @@ namespace service_client
             }
             if (e.Cancelled)
             {
-                File.Delete(Path.Combine(Directory, "temp.dbf"));
+                File.Delete(Path.Combine(Directory, Filename));
                 MessageBox.Show("Файлды жүктөө жокко чыгарылды\n" +
                     "Файл не выгружен");
                 return;
@@ -108,26 +114,33 @@ namespace service_client
             else
             {
 
-                lbl_status.Text = "Файл жүктөлүп бүттү\n" +
-                    "Файл выгружен";
+                lbl_status.Text = "Файл жүктөлүп бүттү\n";
                 DbfFile global_db = new DbfFile(Encoding.UTF8);
                 DbfFile inner_db = new DbfFile(Encoding.UTF8);
                 var region_dict = new Dictionary<string, int>();
                 if (input_region.SelectedItem.ToString() == "Кыргызстан")
                 {
-                    region_dict = regions;
+                    MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
+                        "Можете выйти из приложения", "Бүттү");
+                    return;
                 }
-                else
-                {
-                    region_dict.Add(input_region.SelectedItem.ToString(), regions[input_region.SelectedItem.ToString()]);
-                }
+
+                File.SetAttributes(Path.Combine(Directory, Filename), FileAttributes.Hidden);
+
+                region_dict.Add(input_region.SelectedItem.ToString(), regions[input_region.SelectedItem.ToString()]);
                 foreach (KeyValuePair<string, int> region in region_dict)
                 {
-                    global_db.Open(Path.Combine(Directory, "temp.dbf"), FileMode.Open);
-
+                    global_db.Open(Path.Combine(Directory, Filename), FileMode.Open);
+                    string inner_filename = region.Value.ToString() + ".dbf";
+                    int counter = 1;
+                    while (File.Exists(Path.Combine(Directory, inner_filename)))
+                    {
+                        inner_filename = inner_filename.Substring(0, 5) + $" ({counter}).dbf";
+                        counter++;
+                    }
                     DbfRecord record = new DbfRecord(global_db.Header);
                     
-                    inner_db.Open(Path.Combine(Directory, $"{region.Value}.dbf"), FileMode.Create);
+                    inner_db.Open(Path.Combine(Directory, inner_filename), FileMode.Create);
 
                     for (int i = 0; i < global_db.Header.ColumnCount; i++)
                     {
@@ -159,7 +172,7 @@ namespace service_client
                     inner_db.Close();
                     global_db.Close();
                 }
-                File.Delete(Path.Combine(Directory, "temp.dbf"));
+                File.Delete(Path.Combine(Directory, Filename));
                 MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
                     "Можете выйти из приложения");
                 btn_save.Text = "Кайрадан сактоо";
