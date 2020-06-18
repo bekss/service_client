@@ -137,12 +137,15 @@ namespace service_client
 
                 string temp;
                 byte[] bytes;
+                HashSet<string> okpo_list = new HashSet<string>();
                 while (global_db.ReadNext(record))
                 {
                     DbfRecord new_record = new DbfRecord(inner_db.Header);
-                    if (!record.IsDeleted && record[record.FindColumn("AIL")].ToString().Substring(0, 5) == region.ToString() && record[record.FindColumn("NMES")].Replace(" ", "") == input_start.Value.Month.ToString())  // main grouping by region condition
+                    if (!record.IsDeleted &&
+                        record[record.FindColumn("AIL")].ToString().Substring(0, 5) == region.ToString() &&
+                        record[record.FindColumn("NMES")].Replace(" ", "") == input_start.Value.Month.ToString() &&
+                        !okpo_list.Contains(record[record.FindColumn("RN")]))  // main grouping by region condition
                     {
-
                         for (int j = 0; j < inner_db.Header.ColumnCount; j++)
                         {
                             bytes = Encoding.GetEncoding(1251).GetBytes(record[j]);
@@ -155,6 +158,7 @@ namespace service_client
                                 new_record[j] = temp;
                         }
                         inner_db.Write(new_record, true);
+                        okpo_list.Add(record[record.FindColumn("RN")]);
                     }
                 }
                 inner_db.Close();
@@ -179,6 +183,11 @@ namespace service_client
         private void btn_exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void input_start_ValueChanged(object sender, EventArgs e)
+        {
+            input_end.Value = new DateTime(input_start.Value.Year, input_start.Value.Month, DateTime.DaysInMonth(input_start.Value.Year, input_start.Value.Month));
         }
     }
 }
