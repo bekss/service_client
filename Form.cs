@@ -7,7 +7,6 @@ using System.Net;
 using System.IO;
 using SocialExplorer.IO.FastDBF;
 using System.Security.Permissions;
-using System.Reflection;
 
 namespace service_client
 {
@@ -42,27 +41,17 @@ namespace service_client
         }
 
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void progressBar1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btn_save_Click(object sender, EventArgs e)
         {
+            btn_save.Enabled = false;
             var fbd = new FolderBrowserDialog();
             DialogResult result = fbd.ShowDialog();
 
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
             {
                 Directory = fbd.SelectedPath;
-                string date_start = input_start.Value.ToShortDateString();
-                string date_end = input_end.Value.ToShortDateString();
-
+                string date_start = input_start.Value.ToString("dd-MM-yy");
+                string date_end = input_end.Value.ToString("dd-MM-yy");
                 string uri_text = $"{Service}?startDate={date_start}&&expirationDate={date_end}";
                 int counter = 1;
                 while (File.Exists(Path.Combine(Directory, Filename)))
@@ -77,6 +66,7 @@ namespace service_client
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
                 client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, Filename));
             }
+            btn_save.Enabled = true;
         }
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
@@ -117,7 +107,7 @@ namespace service_client
                 lbl_status.Text = "Файл жүктөлүп бүттү\n";
                 DbfFile global_db = new DbfFile(Encoding.UTF8);
                 DbfFile inner_db = new DbfFile(Encoding.UTF8);
-                var region_dict = new Dictionary<string, int>();
+                int region;
                 if (input_region.SelectedItem.ToString() == "Кыргызстан")
                 {
                     MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
@@ -127,55 +117,53 @@ namespace service_client
 
                 File.SetAttributes(Path.Combine(Directory, Filename), FileAttributes.Hidden);
 
-                region_dict.Add(input_region.SelectedItem.ToString(), regions[input_region.SelectedItem.ToString()]);
-                foreach (KeyValuePair<string, int> region in region_dict)
+                region = regions[input_region.SelectedItem.ToString()];
+                global_db.Open(Path.Combine(Directory, Filename), FileMode.Open);
+                string inner_filename = region.ToString() + ".dbf";
+                int counter = 1;
+                while (File.Exists(Path.Combine(Directory, inner_filename)))
                 {
-                    global_db.Open(Path.Combine(Directory, Filename), FileMode.Open);
-                    string inner_filename = region.Value.ToString() + ".dbf";
-                    int counter = 1;
-                    while (File.Exists(Path.Combine(Directory, inner_filename)))
-                    {
-                        inner_filename = inner_filename.Substring(0, 5) + $" ({counter}).dbf";
-                        counter++;
-                    }
-                    DbfRecord record = new DbfRecord(global_db.Header);
-                    
-                    inner_db.Open(Path.Combine(Directory, inner_filename), FileMode.Create);
-
-                    for (int i = 0; i < global_db.Header.ColumnCount; i++)
-                    {
-                        inner_db.Header.AddColumn(global_db.Header[i]);
-                    }
-
-                    string temp;
-                    byte[] bytes;
-                    while (global_db.ReadNext(record))
-                    {
-                        if (!record.IsDeleted && record[1].ToString().Substring(0, 5) == region.Value.ToString())  // main grouping by region condition
-                        {
-                            
-                            DbfRecord new_record = new DbfRecord(inner_db.Header);
-                            for (int j = 0; j < inner_db.Header.ColumnCount; j++)
-                            {
-                                bytes = Encoding.GetEncoding(1251).GetBytes(record[j]);
-                                temp = Encoding.GetEncoding(1251).GetString(bytes);
-                                if (temp.Contains("?"))
-                                {                                                    //   Imitating null values with '' for both chararter columns and numeric columns.
-                                    new_record[j] = "";                              //   But be aware if you have chararter columns that may contain '?' symbol
-                                }                                                    //   in that case you will simply loose records that contain '?' symbol.
-                                else
-                                    new_record[j] = temp;
-                            }
-                            inner_db.Write(new_record, true);
-                        }
-                    }
-                    inner_db.Close();
-                    global_db.Close();
+                    inner_filename = inner_filename.Substring(0, 5) + $" ({counter}).dbf";
+                    counter++;
                 }
+                DbfRecord record = new DbfRecord(global_db.Header);
+                    
+                inner_db.Open(Path.Combine(Directory, inner_filename), FileMode.Create);
+
+                for (int i = 0; i < global_db.Header.ColumnCount; i++)
+                {
+                    inner_db.Header.AddColumn(global_db.Header[i]);
+                }
+
+                string temp;
+                byte[] bytes;
+                while (global_db.ReadNext(record))
+                {
+                    DbfRecord new_record = new DbfRecord(inner_db.Header);
+                    if (!record.IsDeleted && record[record.FindColumn("AIL")].ToString().Substring(0, 5) == region.ToString() && record[record.FindColumn("NMES")].Replace(" ", "") == input_start.Value.Month.ToString())  // main grouping by region condition
+                    {
+
+                        for (int j = 0; j < inner_db.Header.ColumnCount; j++)
+                        {
+                            bytes = Encoding.GetEncoding(1251).GetBytes(record[j]);
+                            temp = Encoding.GetEncoding(1251).GetString(bytes);
+                            if (temp.Replace(" ", "") == "?")
+                            {                                                    //   Imitating null values with '' for both chararter columns and numeric columns.
+                                new_record[j] = "";                              //   But be aware if you have chararter columns that may contain '?' symbol
+                            }                                                    //   in that case you will simply loose records that contain '?' symbol.
+                            else
+                                new_record[j] = temp;
+                        }
+                        inner_db.Write(new_record, true);
+                    }
+                }
+                inner_db.Close();
+                global_db.Close();
                 File.Delete(Path.Combine(Directory, Filename));
                 MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
                     "Можете выйти из приложения");
                 btn_save.Text = "Кайрадан сактоо";
+                btn_save.Enabled = true;
             }
         }
 
