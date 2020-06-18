@@ -110,6 +110,7 @@
             // input_end
             // 
             this.input_end.CustomFormat = "dd-MM-yy";
+            this.input_end.Enabled = false;
             this.input_end.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.input_end.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.input_end.Location = new System.Drawing.Point(0, 68);
@@ -131,6 +132,7 @@
             this.input_start.Size = new System.Drawing.Size(135, 26);
             this.input_start.TabIndex = 0;
             this.input_start.Value = new System.DateTime(2020, 6, 1, 0, 0, 0, 0);
+            this.input_start.ValueChanged += new System.EventHandler(this.input_start_ValueChanged);
             // 
             // progress
             // 
