@@ -7,37 +7,139 @@ using System.Net;
 using System.IO;
 using SocialExplorer.IO.FastDBF;
 using System.Security.Permissions;
+using System.Globalization;
+using System.Linq;
 
 namespace service_client
 {
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     public partial class Form : System.Windows.Forms.Form
     {
-        public static Dictionary<string, int> regions = new Dictionary<string, int>()
+        public static Dictionary<string, Dictionary<string, int>> regions_districts = new Dictionary<string, Dictionary<string, int>>
         {
-            { "Бишкек ш.", 41711 },
-            { "Ош ш.", 41721 },
-            { "Ысык-Көл", 41702 },
-            { "Жалал-Абад", 41703 },
-            { "Нарын", 41704 },
-            { "Баткен", 41705 },
-            { "Ош", 41706 },
-            { "Талас", 41707 },
-            { "Чүй", 41708 }
+            { "Кыргызстан",
+                new Dictionary<string, int>
+                {
+                    { "Баары", 417 }
+                }
+            },
+            { "Бишкек ш.",
+                new Dictionary<string, int>{
+                    { "Баары", 41711 }
+                }
+            },
+            { "Ош ш.",
+                new Dictionary<string, int>{
+                    {"Баары", 41721 }
+                }
+            },
+            { "Ысык-Көл",
+                new Dictionary<string, int>{
+                    { "Баары", 41702  },
+                    { "Каракол", 41702410 },
+                    { "Балыкчы", 41702420 },
+                    { "Ак-Суу", 41702205 },
+                    { "Жети-Өгүз", 41702210 },
+                    { "Ысык-Көл р.", 41702215 },
+                    { "Тоң", 41702220 },
+                    { "Түп", 41702225 }
+                }
+            },
+            { "Жалал-Абад",
+                new Dictionary<string, int>{
+                    { "Баары", 41703 },
+                    { "Жалал-Абад ш.", 41703410 },
+                    { "Таш-Көмүр ш.", 41703420 },
+                    { "Майлуу-Суу ш.", 41703430 },
+                    { "Кара-Көл ш.", 41703440 },
+                    { "Ала-Бука", 41703204 },
+                    { "Базар-Коргон", 41703204 },
+                    { "Аксы", 41703211 },
+                    { "Ноокен", 41703215 },
+                    { "Сузак", 41703220 },
+                    { "Тогуз-Торо", 41703223 },
+                    { "Токтогул", 41703225 },
+                    { "Чаткал", 41703230 },
+                }
+            },
+            { "Нарын",
+                new Dictionary<string, int>{
+                    { "Баары", 41704 },
+                    { "Нарын ш.", 41704400 },
+                    { "Ак-Талаа", 41704210 },
+                    { "Ат-Башы", 41704220 },
+                    { "Жумгал", 41704230 },
+                    { "Кочкор", 41704235 },
+                    { "Нарын р.", 41704245 }
+                }
+            },
+            { "Баткен",
+                new Dictionary<string, int>{
+                    { "Баары", 41705 },
+                    { "Баткен ш.", 41705410 },
+                    { "Сүлүктү ш.", 41705420 },
+                    { "Кызыл-Кыя ш.", 41705430 },
+                    { "Баткен р.", 41705214 },
+                    { "Лейлек", 41705236 },
+                    { "Кадамжай", 41705258 }
+                }
+            },
+            { "Ош",
+                new Dictionary<string, int>{
+                    { "Баары", 41706 },
+                    { "Алай", 41706207},
+                    { "Араван", 41706211 },
+                    { "Кара-Суу", 41706226 },
+                    { "Ноокат", 41706242 },
+                    { "Кара-Кулжа", 41706246 },
+                    { "Өзгөн", 41706255 },
+                    { "Чоң-Алай", 41706259 }
+                }
+            },
+            { "Талас",
+                new Dictionary<string, int>{
+                    { "Баары",  41707 },
+                    { "Кара-Буура", 41707215 },
+                    { "Бакай-Ата", 41707220 },
+                    { "Манас", 41707225 },
+                    { "Талас р.", 41707232 },
+                    { "Талас ш.", 41707400 }
+                }
+            },
+            { "Чүй",
+                new Dictionary<string, int>{
+                    { "Баары", 41708},
+                    { "Токмок ш.", 41708 },
+                    { "Аламүдүн", 41708203 },
+                    { "Ысык-ата", 41708206 },
+                    { "Жайыл", 41708209 },
+                    { "Кемин", 41708213 },
+                    { "Москва", 41708217 },
+                    { "Панфилов", 41708219 },
+                    { "Сокулук", 41708222 },
+                    { "Чүй р.", 41708223 }
+                }
+            }
         };
         public int Percent { get; set; } = 0;
         public string Service { get; set; } = "http://report.stat.kg/api/report/download/T_Month";
         public string Directory { get; set; } = "";
 
-        public string Filename { get; set; } = "41700.dbf";
+        public string Filename { get; set; } = "417.dbf";
 
         public Form()
 
         {
             InitializeComponent();
-            input_region.Items.AddRange(new string[]{ "Кыргызстан", "Бишкек ш.", "Ош ш.", "Ысык-Көл", "Жалал-Абад", "Нарын", "Баткен", "Ош", "Талас", "Чүй"});
-            input_region.Text = "Кыргызстан";
+            input_region.DataSource = regions_districts.ToList();
+            input_region.DisplayMember = "Key";
+            input_region.ValueMember = "Value";
             input_region.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            input_district.DataSource = regions_districts.First().Value.ToArray();
+            input_district.DisplayMember = "Key";
+            input_district.ValueMember = "Value";
+            input_district.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
 
@@ -107,8 +209,8 @@ namespace service_client
                 lbl_status.Text = "Файл жүктөлүп бүттү\n";
                 DbfFile global_db = new DbfFile(Encoding.UTF8);
                 DbfFile inner_db = new DbfFile(Encoding.UTF8);
-                int region;
-                if (input_region.SelectedItem.ToString() == "Кыргызстан")
+
+                if (((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Key == "Кыргызстан")
                 {
                     MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
                         "Можете выйти из приложения", "Бүттү");
@@ -116,18 +218,20 @@ namespace service_client
                 }
 
                 File.SetAttributes(Path.Combine(Directory, Filename), FileAttributes.Hidden);
-
-                region = regions[input_region.SelectedItem.ToString()];
                 global_db.Open(Path.Combine(Directory, Filename), FileMode.Open);
-                string inner_filename = region.ToString() + ".dbf";
+
+                int territory = ((KeyValuePair<string, int>)input_district.SelectedItem).Value;
+                string inner_filename = territory.ToString() + ".dbf";
+                string base_inner_filename = inner_filename;
+                
                 int counter = 1;
                 while (File.Exists(Path.Combine(Directory, inner_filename)))
                 {
-                    inner_filename = inner_filename.Substring(0, 5) + $" ({counter}).dbf";
+                    inner_filename = $"{base_inner_filename} ({counter}).dbf";
                     counter++;
                 }
                 DbfRecord record = new DbfRecord(global_db.Header);
-                    
+
                 inner_db.Open(Path.Combine(Directory, inner_filename), FileMode.Create);
 
                 for (int i = 0; i < global_db.Header.ColumnCount; i++)
@@ -142,7 +246,7 @@ namespace service_client
                 {
                     DbfRecord new_record = new DbfRecord(inner_db.Header);
                     if (!record.IsDeleted &&
-                        record[record.FindColumn("AIL")].ToString().Substring(0, 5) == region.ToString() &&
+                        record[record.FindColumn("AIL")].Contains(territory.ToString()) &&
                         record[record.FindColumn("NMES")].Replace(" ", "") == input_start.Value.Month.ToString() &&
                         !okpo_list.Contains(record[record.FindColumn("RN")]))  // main grouping by region condition
                     {
@@ -188,6 +292,11 @@ namespace service_client
         private void input_start_ValueChanged(object sender, EventArgs e)
         {
             input_end.Value = new DateTime(input_start.Value.Year, input_start.Value.Month, DateTime.DaysInMonth(input_start.Value.Year, input_start.Value.Month));
+        }
+
+        private void input_region_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            input_district.DataSource = ((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Value.ToArray();
         }
     }
 }

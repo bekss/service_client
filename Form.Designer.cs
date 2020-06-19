@@ -30,10 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             this.label_frame = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.lbl_region = new System.Windows.Forms.Label();
             this.end_date = new System.Windows.Forms.Label();
             this.start_date = new System.Windows.Forms.Label();
             this.input_frame = new System.Windows.Forms.GroupBox();
+            this.input_district = new System.Windows.Forms.ComboBox();
             this.input_region = new System.Windows.Forms.ComboBox();
             this.input_end = new System.Windows.Forms.DateTimePicker();
             this.input_start = new System.Windows.Forms.DateTimePicker();
@@ -48,6 +50,7 @@
             // 
             // label_frame
             // 
+            this.label_frame.Controls.Add(this.label1);
             this.label_frame.Controls.Add(this.lbl_region);
             this.label_frame.Controls.Add(this.end_date);
             this.label_frame.Controls.Add(this.start_date);
@@ -56,6 +59,16 @@
             this.label_frame.Size = new System.Drawing.Size(189, 191);
             this.label_frame.TabIndex = 0;
             this.label_frame.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(124, 166);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(62, 20);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Району";
             // 
             // lbl_region
             // 
@@ -89,6 +102,7 @@
             // 
             // input_frame
             // 
+            this.input_frame.Controls.Add(this.input_district);
             this.input_frame.Controls.Add(this.input_region);
             this.input_frame.Controls.Add(this.input_end);
             this.input_frame.Controls.Add(this.input_start);
@@ -98,6 +112,15 @@
             this.input_frame.TabIndex = 1;
             this.input_frame.TabStop = false;
             // 
+            // input_district
+            // 
+            this.input_district.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.input_district.FormattingEnabled = true;
+            this.input_district.Location = new System.Drawing.Point(0, 163);
+            this.input_district.Name = "input_district";
+            this.input_district.Size = new System.Drawing.Size(135, 28);
+            this.input_district.TabIndex = 2;
+            // 
             // input_region
             // 
             this.input_region.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -106,6 +129,7 @@
             this.input_region.Name = "input_region";
             this.input_region.Size = new System.Drawing.Size(135, 28);
             this.input_region.TabIndex = 2;
+            this.input_region.SelectedIndexChanged += new System.EventHandler(this.input_region_SelectedIndexChanged);
             // 
             // input_end
             // 
@@ -217,6 +241,8 @@
         private System.Windows.Forms.Label lbl_percent;
         private System.Windows.Forms.ComboBox input_region;
         private System.Windows.Forms.Button btn_exit;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox input_district;
     }
 }
 
