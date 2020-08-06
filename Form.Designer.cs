@@ -74,11 +74,11 @@
             // 
             this.lbl_region.AutoSize = true;
             this.lbl_region.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_region.Location = new System.Drawing.Point(25, 114);
+            this.lbl_region.Location = new System.Drawing.Point(124, 111);
             this.lbl_region.Name = "lbl_region";
-            this.lbl_region.Size = new System.Drawing.Size(161, 20);
+            this.lbl_region.Size = new System.Drawing.Size(62, 20);
             this.lbl_region.TabIndex = 2;
-            this.lbl_region.Text = "Аймагы/Территория";
+            this.lbl_region.Text = "Облусу";
             // 
             // end_date
             // 
@@ -143,6 +143,7 @@
             this.input_end.Name = "input_end";
             this.input_end.Size = new System.Drawing.Size(135, 26);
             this.input_end.TabIndex = 1;
+            this.input_end.Value = new System.DateTime(2020, 6, 30, 0, 0, 0, 0);
             // 
             // input_start
             // 

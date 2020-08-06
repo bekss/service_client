@@ -7,7 +7,6 @@ using System.Net;
 using System.IO;
 using SocialExplorer.IO.FastDBF;
 using System.Security.Permissions;
-using System.Globalization;
 using System.Linq;
 
 namespace service_client
@@ -40,48 +39,48 @@ namespace service_client
                     { "Балыкчы", 41702420 },
                     { "Ак-Суу", 41702205 },
                     { "Жети-Өгүз", 41702210 },
-                    { "Ысык-Көл р.", 41702215 },
+                    { "Ысык-Көл", 41702215 },
                     { "Тоң", 41702220 },
-                    { "Түп", 41702225 }
+                    { "Түп", 41702225 },
                 }
             },
             { "Жалал-Абад",
                 new Dictionary<string, int>{
                     { "Баары", 41703 },
-                    { "Жалал-Абад ш.", 41703410 },
-                    { "Таш-Көмүр ш.", 41703420 },
-                    { "Майлуу-Суу ш.", 41703430 },
-                    { "Кара-Көл ш.", 41703440 },
                     { "Ала-Бука", 41703204 },
-                    { "Базар-Коргон", 41703204 },
+                    { "Базар-Коргон", 41703207 },
                     { "Аксы", 41703211 },
                     { "Ноокен", 41703215 },
                     { "Сузак", 41703220 },
                     { "Тогуз-Торо", 41703223 },
                     { "Токтогул", 41703225 },
                     { "Чаткал", 41703230 },
+                    { "Жалал-Абад ш.", 41703410 },
+                    { "Таш-Көмүр ш.", 41703420 },
+                    { "Майлуу-Суу ш.", 41703430 },
+                    { "Кара-Көл ш.", 41703440 },
                 }
             },
             { "Нарын",
                 new Dictionary<string, int>{
                     { "Баары", 41704 },
-                    { "Нарын ш.", 41704400 },
                     { "Ак-Талаа", 41704210 },
                     { "Ат-Башы", 41704220 },
                     { "Жумгал", 41704230 },
                     { "Кочкор", 41704235 },
-                    { "Нарын р.", 41704245 }
+                    { "Нарын", 41704245 },
+                    { "Нарын ш.", 41704400 },
                 }
             },
             { "Баткен",
                 new Dictionary<string, int>{
                     { "Баары", 41705 },
+                    { "Баткен", 41705214 },
+                    { "Лейлек", 41705236 },
+                    { "Кадамжай", 41705258 },
                     { "Баткен ш.", 41705410 },
                     { "Сүлүктү ш.", 41705420 },
                     { "Кызыл-Кыя ш.", 41705430 },
-                    { "Баткен р.", 41705214 },
-                    { "Лейлек", 41705236 },
-                    { "Кадамжай", 41705258 }
                 }
             },
             { "Ош",
@@ -102,14 +101,13 @@ namespace service_client
                     { "Кара-Буура", 41707215 },
                     { "Бакай-Ата", 41707220 },
                     { "Манас", 41707225 },
-                    { "Талас р.", 41707232 },
+                    { "Талас", 41707232 },
                     { "Талас ш.", 41707400 }
                 }
             },
             { "Чүй",
                 new Dictionary<string, int>{
                     { "Баары", 41708},
-                    { "Токмок ш.", 41708 },
                     { "Аламүдүн", 41708203 },
                     { "Ысык-ата", 41708206 },
                     { "Жайыл", 41708209 },
@@ -117,7 +115,8 @@ namespace service_client
                     { "Москва", 41708217 },
                     { "Панфилов", 41708219 },
                     { "Сокулук", 41708222 },
-                    { "Чүй р.", 41708223 }
+                    { "Чүй", 41708223 },
+                    { "Токмок ш.", 41708400 },
                 }
             }
         };
@@ -158,7 +157,7 @@ namespace service_client
                 int counter = 1;
                 while (File.Exists(Path.Combine(Directory, Filename)))
                 {
-                    Filename = Filename.Substring(0, 5) + $" ({counter}).dbf";
+                    Filename = Filename.Substring(0, 3) + $" ({counter}).dbf";
                     counter++;
                 }
 
@@ -212,7 +211,7 @@ namespace service_client
 
                 if (((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Key == "Кыргызстан")
                 {
-                    MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
+                    MessageBox.Show($" {Filename} файлы жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
                         "Можете выйти из приложения", "Бүттү");
                     return;
                 }
@@ -256,7 +255,7 @@ namespace service_client
                             temp = Encoding.GetEncoding(1251).GetString(bytes);
                             if (temp.Replace(" ", "") == "?")
                             {                                                    //   Imitating null values with '' for both chararter columns and numeric columns.
-                                new_record[j] = "";                              //   But be aware if you have chararter columns that may contain '?' symbol
+                                new_record[j] = "";                              //   But be aware if you have character columns that may contain '?' symbol
                             }                                                    //   in that case you will simply loose records that contain '?' symbol.
                             else
                                 new_record[j] = temp;
@@ -268,7 +267,7 @@ namespace service_client
                 inner_db.Close();
                 global_db.Close();
                 File.Delete(Path.Combine(Directory, Filename));
-                MessageBox.Show("ДБФ файлдары жазылып бүттү! Програмдан чыга берсеңиз болот.\n" +
+                MessageBox.Show($" {Filename} жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
                     "Можете выйти из приложения");
                 btn_save.Text = "Кайрадан сактоо";
                 btn_save.Enabled = true;
