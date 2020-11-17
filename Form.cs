@@ -130,6 +130,9 @@ namespace service_client
 
         {
             InitializeComponent();
+            input_start.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            input_end.Value = new DateTime(input_start.Value.Year, input_start.Value.Month, DateTime.DaysInMonth(input_start.Value.Year, input_start.Value.Month));
+
             input_region.DataSource = regions_districts.ToList();
             input_region.DisplayMember = "Key";
             input_region.ValueMember = "Value";
@@ -163,9 +166,9 @@ namespace service_client
 
                 WebClient client = new WebClient();
 
-                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
-                client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
                 client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, Filename));
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
             }
             btn_save.Enabled = true;
         }
@@ -189,7 +192,7 @@ namespace service_client
                         }
                     }
                     MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат\n" +
-                        $"Ошибка на сервере.");
+                        $"Ошибка на сервере.", "Ката");
                     return;
                 }
                 MessageBox.Show("Күтүлбөгөн ката кетти!");
@@ -199,19 +202,19 @@ namespace service_client
             {
                 File.Delete(Path.Combine(Directory, Filename));
                 MessageBox.Show("Файлды жүктөө жокко чыгарылды\n" +
-                    "Файл не выгружен");
+                    "Файл не выгружен", "Жокко чыгарылды");
                 return;
             }
             else
             {
 
                 lbl_status.Text = "Файл жүктөлүп бүттү\n";
-                DbfFile global_db = new DbfFile(Encoding.UTF8);
-                DbfFile inner_db = new DbfFile(Encoding.UTF8);
+                DbfFile global_db = new DbfFile(Encoding.GetEncoding(1251));
+                DbfFile inner_db = new DbfFile(Encoding.GetEncoding(1251));
 
                 if (((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Key == "Кыргызстан")
                 {
-                    MessageBox.Show($" {Filename} файлы жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
+                    MessageBox.Show($"{Filename} файлы жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
                         "Можете выйти из приложения", "Бүттү");
                     return;
                 }
@@ -229,7 +232,8 @@ namespace service_client
                     inner_filename = $"{base_inner_filename} ({counter}).dbf";
                     counter++;
                 }
-                DbfRecord record = new DbfRecord(global_db.Header);
+                DbfRecord record;
+ 
 
                 inner_db.Open(Path.Combine(Directory, inner_filename), FileMode.Create);
 
@@ -238,37 +242,31 @@ namespace service_client
                     inner_db.Header.AddColumn(global_db.Header[i]);
                 }
 
-                string temp;
-                byte[] bytes;
                 HashSet<string> okpo_list = new HashSet<string>();
-                while (global_db.ReadNext(record))
+                long read_index = 0;
+                long record_index = 0;
+                while (read_index < global_db.Header.RecordCount)
                 {
-                    DbfRecord new_record = new DbfRecord(inner_db.Header);
+                    record = global_db.Read(read_index);
+                    record.AllowDecimalTruncate = true;
+
                     if (!record.IsDeleted &&
                         record[record.FindColumn("AIL")].Contains(territory.ToString()) &&
                         record[record.FindColumn("NMES")].Replace(" ", "") == input_start.Value.Month.ToString() &&
                         !okpo_list.Contains(record[record.FindColumn("RN")]))  // main grouping by region condition
                     {
-                        for (int j = 0; j < inner_db.Header.ColumnCount; j++)
-                        {
-                            bytes = Encoding.GetEncoding(1251).GetBytes(record[j]);
-                            temp = Encoding.GetEncoding(1251).GetString(bytes);
-                            if (temp.Replace(" ", "") == "?")
-                            {                                                    //   Imitating null values with '' for both chararter columns and numeric columns.
-                                new_record[j] = "";                              //   But be aware if you have character columns that may contain '?' symbol
-                            }                                                    //   in that case you will simply loose records that contain '?' symbol.
-                            else
-                                new_record[j] = temp;
-                        }
-                        inner_db.Write(new_record, true);
+
+                        record.RecordIndex = record_index++;
+                        inner_db.Write(record);
                         okpo_list.Add(record[record.FindColumn("RN")]);
                     }
+                    read_index++;
                 }
                 inner_db.Close();
                 global_db.Close();
                 File.Delete(Path.Combine(Directory, Filename));
-                MessageBox.Show($" {Filename} жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
-                    "Можете выйти из приложения");
+                MessageBox.Show($"{inner_filename} жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
+                    "Можете выйти из приложения", "Бүттү");
                 btn_save.Text = "Кайрадан сактоо";
                 btn_save.Enabled = true;
             }
