@@ -120,6 +120,7 @@
             this.input_district.Name = "input_district";
             this.input_district.Size = new System.Drawing.Size(135, 28);
             this.input_district.TabIndex = 2;
+            this.input_district.SelectedIndexChanged += new System.EventHandler(this.input_district_SelectedIndexChanged);
             // 
             // input_region
             // 
@@ -180,19 +181,25 @@
             // 
             this.lbl_status.AutoSize = true;
             this.lbl_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_status.Location = new System.Drawing.Point(49, 295);
+            this.lbl_status.Location = new System.Drawing.Point(48, 295);
+            this.lbl_status.MinimumSize = new System.Drawing.Size(170, 0);
             this.lbl_status.Name = "lbl_status";
-            this.lbl_status.Size = new System.Drawing.Size(0, 20);
+            this.lbl_status.Size = new System.Drawing.Size(170, 20);
             this.lbl_status.TabIndex = 4;
             // 
             // lbl_percent
             // 
+            this.lbl_percent.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lbl_percent.AutoSize = true;
             this.lbl_percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_percent.Location = new System.Drawing.Point(427, 295);
+            this.lbl_percent.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbl_percent.Location = new System.Drawing.Point(309, 295);
+            this.lbl_percent.MinimumSize = new System.Drawing.Size(170, 0);
             this.lbl_percent.Name = "lbl_percent";
-            this.lbl_percent.Size = new System.Drawing.Size(0, 20);
+            this.lbl_percent.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lbl_percent.Size = new System.Drawing.Size(170, 20);
             this.lbl_percent.TabIndex = 5;
+            this.lbl_percent.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btn_exit
             // 
@@ -209,9 +216,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 450);
-            this.Controls.Add(this.btn_exit);
             this.Controls.Add(this.lbl_percent);
             this.Controls.Add(this.lbl_status);
+            this.Controls.Add(this.btn_exit);
             this.Controls.Add(this.btn_save);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.input_frame);
