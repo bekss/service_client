@@ -81,6 +81,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E308043986134DBDB6F2013374B032F7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F599225F3E104D4155F9881DEED26575"
         "OwnerKey" = "8:_086F33284CAB43BCB063C6459A9AB842"
         "MsmSig" = "8:_UNDEFINED"
@@ -448,6 +454,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E308043986134DBDB6F2013374B032F7"
+            {
+            "SourcePath" = "8:..\\bin\\Release\\directory.txt"
+            "TargetName" = "8:directory.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_064F3E15D59A46818818F09AA41D7216"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F599225F3E104D4155F9881DEED26575"
             {
             "AssemblyRegister" = "3:1"
@@ -530,6 +556,28 @@
                     }
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_B20483CF91B548FEA323515DB7F87AD0"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_064F3E15D59A46818818F09AA41D7216"
+                    {
+                    "Name" = "8:Emgek"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_E25B9EE1AE814707980BBD5E17A4F64F"
+                        "Folders"
+                        {
+                        }
+                    }
+                }
+            }
         }
         "LaunchCondition"
         {
@@ -546,15 +594,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:DBF Download"
-        "ProductCode" = "8:{0DC55C8E-227C-4FB8-8433-1002F1EEAF4E}"
-        "PackageCode" = "8:{7A8E906B-8460-4AD8-A368-1D22AF9BF0FA}"
+        "ProductCode" = "8:{43485252-3707-4835-A19D-B21BDBFE5B16}"
+        "PackageCode" = "8:{2128B1A4-7FA2-4A60-8257-396F3CA52C66}"
         "UpgradeCode" = "8:{4F9AD430-D94D-4ABA-9B92-20C24DDAB00C}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.2.1"
+        "ProductVersion" = "8:3.4.0"
         "Manufacturer" = "8:National Statistics Committee"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/soyuzbek"
