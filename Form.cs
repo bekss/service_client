@@ -6,16 +6,14 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using SocialExplorer.IO.FastDBF;
-using System.Security.Permissions;
 using System.Linq;
 using System.Threading;
 
 namespace service_client
 {
-    [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     public partial class Form : System.Windows.Forms.Form
     {
-        public static Dictionary<string, Dictionary<string, int>> regions_districts = new Dictionary<string, Dictionary<string, int>>
+        private static Dictionary<string, Dictionary<string, int>> regions_districts = new Dictionary<string, Dictionary<string, int>>
         {
             { "Кыргызстан",
                 new Dictionary<string, int>
@@ -121,17 +119,17 @@ namespace service_client
                 }
             }
         };
-        public int Percent { get; set; } = 0;
-        public string Service { get; set; } = "http://report.stat.kg/api/report/download/T_Month";
-        public string Directory { get; set; } = "";
+        private string Service { get; set; } = "http://report.stat.kg/api/report/download/T_Month";
+        private string current_dir { get; set; } = "";
 
-        public string Filename { get; set; } = "417.dbf";
+        private string Filename { get; set; } = "417";
 
         public Form()
-
         {
             InitializeComponent();
 
+            current_dir = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                @"Emgek/directory.txt"));
             // Initial values of datetime pickers
             DateTime month = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
 
@@ -157,22 +155,23 @@ namespace service_client
         private void btn_save_Click(object sender, EventArgs e)
         {
             var fbd = new FolderBrowserDialog();
+            if (Directory.Exists(current_dir))
+            {
+                fbd.SelectedPath = current_dir;
+            }
             DialogResult result = fbd.ShowDialog();
 
             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
             {
-                Directory = fbd.SelectedPath;
+                current_dir = fbd.SelectedPath;
+                File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    @"Emgek/directory.txt"),
+                    current_dir);
                 string date_start = input_start.Value.ToString("dd-MM-yy");
                 string date_end = input_end.Value.ToString("dd-MM-yy");
                 string uri_text = $"{Service}?startDate={date_start}&&expirationDate={date_end}";
-                //string uri_text = "https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_1920_18MG.mp4";
 
-                int counter = 1;
-                while (File.Exists(Path.Combine(Directory, Filename)))
-                {
-                    Filename = Filename.Substring(0, 3) + $" ({counter}).dbf";
-                    counter++;
-                }
+                Filename = get_filename(current_dir, Filename);
 
                 Thread thread = new Thread(() => {
                     WebClient client = new WebClient();
@@ -183,7 +182,7 @@ namespace service_client
                             btn_exit.Enabled = false;
                         });
                  
-                        client.DownloadFileAsync(new Uri(uri_text), Path.Combine(Directory, Filename));
+                        client.DownloadFileAsync(new Uri(uri_text), Path.Combine(current_dir, Filename));
                         client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Client_DownloadProgressChanged);
                         client.DownloadFileCompleted += new AsyncCompletedEventHandler(Client_DownloadFileCompleted);
                 });
@@ -205,17 +204,16 @@ namespace service_client
                     {
                         if (e.Error.InnerException.GetType().Equals(typeof(IOException)))
                         {
-                            MessageBox.Show("Ката: Програм колдонгон Кыргызстан.dbf файлы башка програмда колдонулуп атат аны жаап кайра аракет кылыңыз.");
+                            MessageBox.Show($"Ката: {Filename} файлы башка програмда колдонулуп атат аны жаап кайра аракет кылыңыз.");
                             return;
                         }
                         if (e.Error.GetType().Equals(typeof(UnauthorizedAccessException)))
                         {
-                            MessageBox.Show($"{Directory} директориасына жеткиңиз жок. Башка директорианы тандап көрүңүз");
+                            MessageBox.Show($"{current_dir} директориасына жеткиңиз жок. Башка директорианы тандап көрүңүз");
                             return;
                         }
                     }
-                    MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат\n" +
-                        $"Ошибка на сервере.", "Ката");
+                    MessageBox.Show($"Ката: интернет жок болушу мүмкүн же report.stat.kg иштебей атат", "Ката");
                     return;
                 }
                 MessageBox.Show("Күтүлбөгөн ката кетти!");
@@ -223,10 +221,9 @@ namespace service_client
             }
             if (e.Cancelled)
             {
-                File.Delete(Path.Combine(Directory, Filename));
-                MessageBox.Show("Файлды жүктөө жокко чыгарылды\n" +
-                    "Файл не выгружен", "Жокко чыгарылды");
-                Invoke((MethodInvoker)delegate ()
+                File.Delete(Path.Combine(current_dir, Filename));
+                MessageBox.Show("Файлды жүктөө жокко чыгарылды", "Жокко чыгарылды");
+                Invoke((MethodInvoker)delegate
                 {
                     btn_save.Enabled = true;
                     btn_exit.Enabled = true;
@@ -235,103 +232,92 @@ namespace service_client
             }
             else
             {
-                DbfFile global_db = new DbfFile(Encoding.GetEncoding(1251));
-                DbfFile inner_db = new DbfFile(Encoding.GetEncoding(1251));
 
                 string current_region = "";
-                Invoke((MethodInvoker)delegate () { current_region = ((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Key; });
+                Invoke((MethodInvoker)delegate { current_region = ((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Key; });
 
                 if (current_region == "Кыргызстан")
                 {
-                    Invoke((MethodInvoker)delegate () { lbl_status.Text = "Файл жүктөлүп бүттү"; });
-                    MessageBox.Show($"{Filename} файлы жазылып бүттү! Программдан чыга берсеңиз болот.\n" +
-                        "Можете выйти из приложения", "Бүттү");
+                    Invoke((MethodInvoker)delegate { lbl_status.Text = $"{Filename} иштелип aтат..."; });
+                    Thread.Sleep(2000);
+                    Invoke((MethodInvoker)delegate { 
+                        lbl_status.Text = $"{Filename} иштелип бүттү";
+                        btn_exit.Enabled = true;
+                    });
 
-                    Invoke((MethodInvoker)delegate () { btn_exit.Enabled = true; });
-                    
                     return;
                 }
 
-                File.SetAttributes(Path.Combine(Directory, Filename), FileAttributes.Hidden);
-                global_db.Open(Path.Combine(Directory, Filename), FileMode.Open);
+                DbfFile global_db = new DbfFile(Encoding.GetEncoding(1251));
+                DbfFile inner_db = new DbfFile(Encoding.GetEncoding(1251));
 
-                Invoke((MethodInvoker)delegate ()
+                File.SetAttributes(Path.Combine(current_dir, Filename), FileAttributes.Hidden);
+                global_db.Open(Path.Combine(current_dir, Filename), FileMode.Open);
+
+                Invoke((MethodInvoker)delegate
                 {
                     progress.Value = 0;
                     progress.Maximum = (int)global_db.Header.RecordCount;
-                    lbl_status.Text = "Файлды иштетип атабыз...";
-                    lbl_percent.Text = $"0 / {(int)global_db.Header.RecordCount}";
+                    lbl_rec_count.Text = "1";
                 });
-                
                 int territory = 0;
-                Invoke((MethodInvoker)delegate () { territory = ((KeyValuePair<string, int>)input_district.SelectedItem).Value; });
-               
-                string inner_filename = territory.ToString() + ".dbf";
-                string base_inner_filename = inner_filename;
+                Invoke((MethodInvoker)delegate { territory = ((KeyValuePair<string, int>)input_district.SelectedItem).Value; });
 
-                int counter = 1;
-                while (File.Exists(Path.Combine(Directory, inner_filename)))
-                {
-                    inner_filename = $"{base_inner_filename} ({counter}).dbf";
-                    counter++;
-                }
-                DbfRecord record;
-
-
-                inner_db.Open(Path.Combine(Directory, inner_filename), FileMode.Create);
-
+                string inner_filename = get_filename(current_dir, territory.ToString());
+                Invoke((MethodInvoker)delegate { lbl_status.Text = $"{inner_filename} иштелип атат..."; });
+                inner_db.Open(Path.Combine(current_dir, inner_filename), FileMode.Create);
+                
                 for (int i = 0; i < global_db.Header.ColumnCount; i++)
                 {
                     inner_db.Header.AddColumn(global_db.Header[i]);
                 }
 
                 HashSet<string> okpo_list = new HashSet<string>();
-                long read_index = 0;
-                long record_index = 0;
-                while (read_index < global_db.Header.RecordCount)
+
+                DbfRecord record = new DbfRecord(global_db.Header);
+                record.AllowDecimalTruncate = true;
+                DbfRecord new_record = new DbfRecord(inner_db.Header);
+                new_record.AllowDecimalTruncate = true;
+                new_record.AllowIntegerTruncate = true;
+                long record_count = 0;
+                while (global_db.ReadNext(record))
                 {
-                    record = global_db.Read(read_index);
-                    record.AllowDecimalTruncate = true;
                     if (!record.IsDeleted &&
                         record[record.FindColumn("AIL")].Contains(territory.ToString()) &&
                         record[record.FindColumn("NMES")].Replace(" ", "") == input_start.Value.Month.ToString() &&
                         !okpo_list.Contains(record[record.FindColumn("RN")]))  // main grouping by region condition
                     {
-
-                        record.RecordIndex = record_index++;
-                        inner_db.Write(record);
-                        okpo_list.Add(record[record.FindColumn("RN")]);
-                        Invoke((MethodInvoker)delegate ()
+                        for (int j = 0; j < inner_db.Header.ColumnCount; j++)
                         {
-                            progress.Value = (int)read_index;
-                            lbl_percent.Text = $"{(int)read_index} / {(int)global_db.Header.RecordCount}";
+                            new_record[j] = record[j];
+                        }
+                        Invoke((MethodInvoker)delegate {
+                            lbl_rec_count.Text = record_count.ToString();
                         });
+                        record_count++;
+                        inner_db.Write(new_record, true);
+                        okpo_list.Add(record[record.FindColumn("RN")]);
                     }
-                    read_index++;
+                    Invoke((MethodInvoker)delegate { if (progress.Value < progress.Maximum) progress.Value++; });
                 }
-                
-                inner_db.Close();
-                
-                Invoke((MethodInvoker)delegate ()
+                Invoke((MethodInvoker)delegate
                 {
-                    progress.Value = (int)read_index;
-                    lbl_percent.Text = $"{(int)read_index} / {(int)global_db.Header.RecordCount}";
-                    lbl_status.Text = "Файл иштелип бүттү";
+                    lbl_rec_count.Text = record_count.ToString();
+                    lbl_status.Text = $"{inner_filename} иштелип бүттү";
                     btn_exit.Enabled = true;
                 });
-                
+                inner_db.Close();
                 global_db.Close();
-                
-                File.Delete(Path.Combine(Directory, Filename));
-
+                File.Delete(Path.Combine(current_dir, Filename));
             }
+
         }
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Invoke((MethodInvoker)delegate ()
+            Invoke((MethodInvoker)delegate
             {
-                lbl_status.Text = "Сиздин Файл жүктөлүп атат...";
+                lbl_status.Text = "Файл жүктөлүп атат...";
                 progress.Style = ProgressBarStyle.Blocks;
                 lbl_percent.Text = $"{e.ProgressPercentage} / 100";
                 progress.Value = e.ProgressPercentage;
@@ -346,33 +332,42 @@ namespace service_client
 
         private void input_start_ValueChanged(object sender, EventArgs e)
         {
+            lbl_rec_count.Text = "";
+            lbl_percent.Text = "";
+            lbl_status.Text = "";
+            progress.Value = 0;
             input_end.Value = new DateTime(input_start.Value.Year, input_start.Value.Month, DateTime.DaysInMonth(input_start.Value.Year, input_start.Value.Month));
             btn_save.Enabled = true;
         }
 
         private void input_region_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lbl_rec_count.Text = "";
+            lbl_percent.Text = "";
+            lbl_status.Text = "";
+            progress.Value = 0;
             input_district.DataSource = ((KeyValuePair<string, Dictionary<string, int>>)input_region.SelectedItem).Value.ToArray();
             btn_save.Enabled = true;
         }
 
         private void input_district_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lbl_rec_count.Text = "";
+            lbl_percent.Text = "";
+            lbl_status.Text = "";
+            progress.Value = 0;
             btn_save.Enabled = true;
         }
-    }
-    public static class threadHandling
-    {
-        internal static void get_region(this Control control, Action action)
+        private string get_filename(string dir, string arg)
         {
-            if (control.InvokeRequired)
+            int counter = 1;
+            string temp_name = $"{arg}.dbf";
+            while (File.Exists(Path.Combine(dir, temp_name)))
             {
-                control.Invoke(action);
+                temp_name = $"{arg} ({counter}).dbf";
+                counter++;
             }
-            else
-            {
-                action();
-            }
+            return temp_name;
         }
     }
 }
