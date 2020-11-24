@@ -44,6 +44,7 @@
             this.lbl_status = new System.Windows.Forms.Label();
             this.lbl_percent = new System.Windows.Forms.Label();
             this.btn_exit = new System.Windows.Forms.Button();
+            this.lbl_rec_count = new System.Windows.Forms.Label();
             this.label_frame.SuspendLayout();
             this.input_frame.SuspendLayout();
             this.SuspendLayout();
@@ -182,9 +183,9 @@
             this.lbl_status.AutoSize = true;
             this.lbl_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbl_status.Location = new System.Drawing.Point(48, 295);
-            this.lbl_status.MinimumSize = new System.Drawing.Size(170, 0);
+            this.lbl_status.MinimumSize = new System.Drawing.Size(240, 0);
             this.lbl_status.Name = "lbl_status";
-            this.lbl_status.Size = new System.Drawing.Size(170, 20);
+            this.lbl_status.Size = new System.Drawing.Size(240, 20);
             this.lbl_status.TabIndex = 4;
             // 
             // lbl_percent
@@ -193,11 +194,11 @@
             this.lbl_percent.AutoSize = true;
             this.lbl_percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbl_percent.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lbl_percent.Location = new System.Drawing.Point(309, 295);
-            this.lbl_percent.MinimumSize = new System.Drawing.Size(170, 0);
+            this.lbl_percent.Location = new System.Drawing.Point(349, 295);
+            this.lbl_percent.MinimumSize = new System.Drawing.Size(130, 0);
             this.lbl_percent.Name = "lbl_percent";
             this.lbl_percent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lbl_percent.Size = new System.Drawing.Size(170, 20);
+            this.lbl_percent.Size = new System.Drawing.Size(130, 20);
             this.lbl_percent.TabIndex = 5;
             this.lbl_percent.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -211,11 +212,24 @@
             this.btn_exit.UseVisualStyleBackColor = true;
             this.btn_exit.Click += new System.EventHandler(this.btn_exit_Click);
             // 
+            // lbl_rec_count
+            // 
+            this.lbl_rec_count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_rec_count.AutoSize = true;
+            this.lbl_rec_count.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbl_rec_count.Location = new System.Drawing.Point(293, 295);
+            this.lbl_rec_count.MinimumSize = new System.Drawing.Size(50, 0);
+            this.lbl_rec_count.Name = "lbl_rec_count";
+            this.lbl_rec_count.Size = new System.Drawing.Size(50, 20);
+            this.lbl_rec_count.TabIndex = 7;
+            this.lbl_rec_count.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 450);
+            this.Controls.Add(this.lbl_rec_count);
             this.Controls.Add(this.lbl_percent);
             this.Controls.Add(this.lbl_status);
             this.Controls.Add(this.btn_exit);
@@ -251,6 +265,7 @@
         private System.Windows.Forms.Button btn_exit;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox input_district;
+        private System.Windows.Forms.Label lbl_rec_count;
     }
 }
 
